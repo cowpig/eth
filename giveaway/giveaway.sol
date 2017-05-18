@@ -1,25 +1,28 @@
 pragma solidity ^0.4.6;
 
 contract GiveAway {
-	enum ClaimStatus { None, Unclaimed, Claimed }
+	enum ClaimStatus { None, Verified, Claimed }
 	
 	address public admin;
-	mapping (bytes32 => ClaimStatus) private claims;
+	mapping (bytes32 => ClaimStatus) private participants;
+
+	uint constant free_lunch = 0.03;
 	
-	function GiveAway {
-		// put $ in this address
-	}
+	function GiveAway {	}
 
 	function ClaimEther(bytes32 claimant, address addr) {
-		require(claims[claimant] == Unclaimed);
-		
+		// only verified participants get free ether
+		require(participants[claimant] == Verified);
+		participants[claimant] = Claimed;
+
 		// create transaction to send $ to participant
-		claims[claimant] = Claimed; // should only happen if transaction is confirmed
+		msg.sender.transfer(free_lunch);
 	}
 
-	function AddParticipant(bytes32 participant) {
+	function VerifyParticipant(bytes32 participant) {
+		// only the admin can verify participants
 		require(msg.sender == admin);
 
-		claims[participant] = Unclaimed;
+		participants[participant] = Verified;
 	}
 }

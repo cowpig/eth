@@ -8,7 +8,11 @@ contract GiveAway {
 
 	uint constant free_lunch = 300000000000000000;
 	
-	function GiveAway( ) { }
+	function GiveAway() {
+		admin = msg.sender;
+	}
+
+	function AddEth () payable {}
 
 	function ClaimEther(bytes32 claimant, address addr) {
 		// only verified participants get free ether
@@ -26,5 +30,11 @@ contract GiveAway {
 		if (msg.sender != admin) return;
 
 		participants[participant] = ClaimStatus.Verified;
+	}
+
+	function End() {
+		// only the admin can verify participants
+		if (msg.sender != admin) return;
+		selfdestruct(admin);
 	}
 }

@@ -21,11 +21,28 @@ contract_init_data = {
 }
 
 deployed_contract = ContractClass.new(contract_init_data)
-contract_instance = ContractClass.at(deployed_contract.address)
 
 load_up = {
 	from: admin_account, 
 	to: deployed_contract.address, 
-	value: web3.toWei(1, 'ether'),
+	value: web3.toWei(10, 'ether'),
 }
 deployed_contract.AddEth.sendTransaction(load_up)
+
+deployed_contract.VerifyParticipant.sendTransaction('Alice', {from: admin_account})
+deployed_contract.VerifyParticipant.sendTransaction('Bob', {from: admin_account})
+
+deployed_contract.CanClaim.call('Alice')
+
+alice = web3.eth.accounts[1]
+bob = web3.eth.accounts[1]
+
+deployed_contract.ClaimEther.sendTransaction('Alice', {from: alice})
+deployed_contract.ClaimEther.sendTransaction('Bob', {from: bob})
+
+web3.fromWei(web3.eth.getBalance(deployed_contract.address), "ether")
+web3.fromWei(web3.eth.getBalance(bob), "ether")
+web3.fromWei(web3.eth.getBalance(admin_account), "ether")
+
+deployed_contract.End.sendTransaction({from: admin_account})
+web3.fromWei(web3.eth.getBalance(admin_account), "ether")

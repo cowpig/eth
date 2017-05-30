@@ -1,3 +1,4 @@
+
 pragma solidity ^0.4.10;
 
 contract GiveAway {
@@ -5,8 +6,7 @@ contract GiveAway {
 	
 	address public admin;
 	mapping (bytes32 => ClaimStatus) private participants;
-
-	uint constant free_lunch = 300000000000000000;
+	uint constant free_lunch = 25000000000000000;
 	
 	function GiveAway() {
 		admin = msg.sender;
@@ -14,27 +14,26 @@ contract GiveAway {
 
 	function AddEth () payable {}
 
-	function ClaimEther(bytes32 claimant, address addr) {
-		// only verified participants get free ether
+	function ClaimEther(bytes32 claimant) {
 		if (participants[claimant] != ClaimStatus.Verified) return;
-
-		// each participant only gets one free lunch
 		participants[claimant] = ClaimStatus.Claimed;
-
-		// create transaction to send $ to participant
-		msg.sender.transfer(free_lunch);
+		if (!msg.sender.send(free_lunch))
+			participants[claimant] = ClaimStatus.Verified;
 	}
 
 	function VerifyParticipant(bytes32 participant) {
-		// only the admin can verify participants
 		if (msg.sender != admin) return;
-
 		participants[participant] = ClaimStatus.Verified;
 	}
 
+	function CanClaim(bytes32 participant) returns (bool) {
+		return participants[participant] == ClaimStatus.Verified;
+	}
+
 	function End() {
-		// only the admin can verify participants
 		if (msg.sender != admin) return;
 		selfdestruct(admin);
 	}
 }
+
+

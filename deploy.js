@@ -20,7 +20,9 @@ contract_init_data = {
 	gas: 1000000,
 }
 
-deployed_contract = ContractClass.new(contract_init_data)
+people = ['Laura@test.com', 'banana+plan@check.com']
+
+deployed_contract = ContractClass.new(people, contract_init_data)
 
 load_up = {
 	from: admin_account, 
@@ -33,15 +35,18 @@ deployed_contract.VerifyParticipant.sendTransaction('Alice', {from: admin_accoun
 deployed_contract.VerifyParticipant.sendTransaction('Bob', {from: admin_account})
 
 deployed_contract.CanClaim.call('Alice')
+deployed_contract.CanClaim.call(people[0])
+deployed_contract.CanClaim.call(people[1])
 
 alice = web3.eth.accounts[1]
-bob = web3.eth.accounts[1]
+bob = web3.eth.accounts[2]
+laura = web3.eth.accounts[3]
 
-deployed_contract.ClaimEther.sendTransaction('Alice', {from: alice})
 deployed_contract.ClaimEther.sendTransaction('Bob', {from: bob})
+deployed_contract.ClaimEther.sendTransaction('Laura@test.com', {from: laura})
 
 web3.fromWei(web3.eth.getBalance(deployed_contract.address), "ether")
-web3.fromWei(web3.eth.getBalance(bob), "ether")
+web3.fromWei(web3.eth.getBalance(laura), "ether")
 web3.fromWei(web3.eth.getBalance(admin_account), "ether")
 
 deployed_contract.End.sendTransaction({from: admin_account})

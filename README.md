@@ -1,6 +1,7 @@
 # eth
 
 sandbox for playing with etherereum
+
 in particular, the testrpc / web3 / solc flow
 
 ## installation
@@ -17,6 +18,7 @@ npm install
 ## run the GiveAway example in a node repl
 
 First, you need to run testrpc. 
+
 I recommend opening opening two windows-side-by-side so that you can see changes to the blockchain in real-time.
 ```bash
 ./node_modules/.bin/testrpc
@@ -40,7 +42,8 @@ Web3 = require('web3')
 web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
 ```
 
-web3 will return a [massive interface](https://github.com/ethereum/wiki/wiki/JavaScript-API)
+web3 will return a [massive interface](https://github.com/ethereum/wiki/wiki/JavaScript-API), and I'm only using a small part of it here. Let's get the contract loaded up:
+
 ```javascript
 // compile our contract
 contract_file = 'giveaway/giveaway.sol'
@@ -50,6 +53,7 @@ compiledContract = Solc.compile(source_code)
 ```
 
 The compiledContract is kind of gnarly, but the important parts are the `abi` and the `bytecode`
+
 ```javascript
 // a Contract's interface is defined by the "Application Binary Interface"
 abi = compiledContract.contracts[contract_name].interface

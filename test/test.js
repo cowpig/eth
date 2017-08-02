@@ -22,7 +22,6 @@ deployed_contract = ContractClass.new(contract_init_data)
 
 web3.fromWei(web3.eth.getBalance(deployed_contract.address), "ether")
 acc = web3.eth.accounts[0]
-deployed_contract.Set.call("akey", 5, {from: acc, value: web3.toWei(10, 'ether')})
 web3.fromWei(web3.eth.getBalance(deployed_contract.address), "ether")
 deployed_contract.Get.call("akey")
 

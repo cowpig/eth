@@ -19,6 +19,7 @@ abi = compiledContract.contracts[contract_name].interface
 GiveAwayContract =  web3.eth.contract(JSON.parse(abi))
 
 
+// let's deploy this contract to our blockchain
 bytecode = compiledContract.contracts[contract_name].bytecode;
 admin_account = web3.eth.accounts[0]
 contract_init_data = {
@@ -26,11 +27,11 @@ contract_init_data = {
 	from: admin_account,
 	gas: 1000000,
 }
-
-people = ['Laura', 'Gary']
-
+people = ['Laura', 'Gary'] // Laura and Gary are our starting participants
 deployed_contract = GiveAwayContract.new(people, contract_init_data)
 
+
+// and add some ether to it
 load_up = {
 	from: admin_account, 
 	to: deployed_contract.address, 
@@ -38,6 +39,7 @@ load_up = {
 }
 deployed_contract.AddEth.sendTransaction(load_up)
 
+// play around with the contract
 deployed_contract.VerifyParticipant('Alice', {from: admin_account})
 deployed_contract.VerifyParticipant.sendTransaction('Bob', {from: admin_account})
 

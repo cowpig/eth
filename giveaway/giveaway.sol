@@ -1,4 +1,3 @@
-
 pragma solidity ^0.4.10;
 
 contract GiveAway {
@@ -38,5 +37,3 @@ contract GiveAway {
 		selfdestruct(admin);
 	}
 }
-
-
